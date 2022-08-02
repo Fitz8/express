@@ -52,6 +52,15 @@ exports.deleteUser = async (req, res) => {
     }
 }
 
+exports.login = async (req, res) => {
+    try { 
+        req.body.login ? res.send({Login: "Successful!"}) : res.send({Login: "Unsuccessful"});
+    } catch(error) {
+        console.log(error);
+        res.send({err: error});
+    }
+}
+
 // {
 //     "username": "Bob",
 //     "email": "bobsemail@bob.com",
