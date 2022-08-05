@@ -1,10 +1,13 @@
 const User = require("./model");
+const jwt = require("jsonwebtoken");
+// require("dotenv").config();
 
 exports.createUser = async (req, res) => {
     try {  
         const newUser = await User.create(req.body);
-        console.log(newUser);
-        res.send({msg: "Create request sent"});
+        const token = await jwt.sign({_id: newUser._id}, process.env.SECRET);
+        //generate new token with newUser._id
+        res.send({msg: "Create request sent", token});
     } catch(error) {
         console.log(error);
         res.send({err: error});
@@ -54,13 +57,13 @@ exports.deleteUser = async (req, res) => {
 
 exports.login = async (req, res) => {
     try { 
-        req.body.login ? res.send({Login: "Successful!"}) : res.send({Login: "Unsuccessful"});
+        const token = await jwt.sign({ _id: req.user._id }, process.env.SECRET);
+        res.send({"Logged In": req.user.username, token});
     } catch(error) {
         console.log(error);
         res.send({err: error});
     }
 }
-
 // {
 //     "username": "Bob",
 //     "email": "bobsemail@bob.com",
