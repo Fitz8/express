@@ -19,6 +19,10 @@ app.use(express.json()); //Tell entire sever that it will always receive json an
 app.use(cors());
 app.use(userRouter);
 
+app.get("/health", (req, res) => {
+    res.status(200).send({ message: "API is working" });
+});
+
 app.listen(5001, () => {
     console.log("Listening on port 5001");
 })
