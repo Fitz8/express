@@ -5,9 +5,10 @@ const jwt = require("jsonwebtoken");
 exports.createUser = async (req, res) => {
     try {  
         const newUser = await User.create(req.body);
+        const savedUser = await newUser.save();
         const token = await jwt.sign({_id: newUser._id}, process.env.SECRET);
         //generate new token with newUser._id
-        res.send({msg: "Create request sent", token});
+        res.send({msg: "Create request sent", token, savedUser});
     } catch(error) {
         console.log(error);
         res.send({err: error});
@@ -18,9 +19,8 @@ exports.findUser = async (req, res) => {
     try {  
         const results = await User.find(req.body);
         console.log(results);
-        res.send({msg: "Get request sent"});
+        res.send(results);
     } catch(error) {
-        console.log(error);
         res.send({err: error});
     }
 }
@@ -58,7 +58,7 @@ exports.deleteUser = async (req, res) => {
 exports.login = async (req, res) => {
     try { 
         const token = await jwt.sign({ _id: req.user._id }, process.env.SECRET);
-        res.send({"Logged In": req.user.username, token});
+        res.send({"user": req.user.username, token});
     } catch(error) {
         console.log(error);
         res.send({err: error});
