@@ -23,6 +23,7 @@ app.use(express.json()); //Tell entire sever that it will always receive json an
 app.use(cors());
 app.use(userRouter);
 
-app.listen(5001, () => {
+app.listen(process.env.PORT || 5000, () => {
     console.log("Listening on port 5001");
 })
+
